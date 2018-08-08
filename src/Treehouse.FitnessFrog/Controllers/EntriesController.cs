@@ -55,13 +55,13 @@ namespace Treehouse.FitnessFrog.Controllers
         // We don't need to alias the method to AddPost
         [HttpPost]
         public ActionResult Add(
-            string date, 
-            string activityId, 
-            string duration, 
-            string intensity, 
-            string exclude, 
+            DateTime? date, 
+            int? activityId, 
+            double? duration, 
+            Entry.IntensityLevel? intensity, 
+            bool? exclude, 
             string notes )
-        {
+        {            
             ViewBag.Date = date;
             ViewBag.ActivityId = activityId;
             ViewBag.Duration = duration;
