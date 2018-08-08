@@ -67,7 +67,9 @@ namespace Treehouse.FitnessFrog.Controllers
             {
                 //if it has no errors, add it to the repository
                 _entriesRepository.AddEntry(entry);
-                // TODO Display the Entries list page
+
+                //redirect to Index page
+                return RedirectToAction("Index");
             }
             //return page View with entry object passed back
             return View(entry);
