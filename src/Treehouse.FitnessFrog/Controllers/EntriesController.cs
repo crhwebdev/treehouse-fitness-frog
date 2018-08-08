@@ -42,8 +42,13 @@ namespace Treehouse.FitnessFrog.Controllers
         // Add GET Route
         public ActionResult Add()
         {
-            
-            return View();
+            var entry = new Entry()
+            {
+                Date = DateTime.Today
+            };
+
+            //pass a new instance of Entry class to the view
+            return View(entry);
         }
 
         // Add POST Route
@@ -53,16 +58,19 @@ namespace Treehouse.FitnessFrog.Controllers
         // Second part tells what kind of http action it is: POST
         // But, because our method signature is now different because we are passing in Form fields as parameters
         // We don't need to alias the method to AddPost
+        // Update:  use Entry class instead of idividual properties of form - C# will populate Entry class with properties
         [HttpPost]
-        public ActionResult Add(
-            DateTime? date, 
-            int? activityId, 
-            double? duration, 
-            Entry.IntensityLevel? intensity, 
-            bool? exclude, 
-            string notes )
-        {                        
-            return View();
+        public ActionResult Add(Entry entry)
+        {
+            //check to see if Model is valid (i.e. no errors)
+            if (ModelState.IsValid)
+            {
+                //if it has no errors, add it to the repository
+                _entriesRepository.AddEntry(entry);
+                // TODO Display the Entries list page
+            }
+            //return page View with entry object passed back
+            return View(entry);
         }
        
         public ActionResult Edit(int? id)
