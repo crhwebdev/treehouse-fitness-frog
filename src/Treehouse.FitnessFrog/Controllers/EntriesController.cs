@@ -47,6 +47,9 @@ namespace Treehouse.FitnessFrog.Controllers
                 Date = DateTime.Today
             };
 
+            //passing list of activitiesin Data to Add.cshtml to be used to populate SelectList
+            ViewBag.ActivitiesSelectListItems = new SelectList(Data.Data.Activities, "Id", "Name");
+
             //pass a new instance of Entry class to the view
             return View(entry);
         }
@@ -71,6 +74,10 @@ namespace Treehouse.FitnessFrog.Controllers
                 //redirect to Index page
                 return RedirectToAction("Index");
             }
+            
+            //passing list of activitiesin Data to Add.cshtml to be used to populate SelectList
+            ViewBag.ActivitiesSelectListItems = new SelectList(Data.Data.Activities, "Id", "Name");
+       
             //return page View with entry object passed back
             return View(entry);
         }
