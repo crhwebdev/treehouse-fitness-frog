@@ -39,15 +39,35 @@ namespace Treehouse.FitnessFrog.Controllers
             return View(entries);
         }
 
+        // Add GET Route
         public ActionResult Add()
         {
             
             return View();
         }
 
-        [ActionName("Add"), HttpPost]
-        public ActionResult AddPost()
+        // Add POST Route
+        //Define a Post Action to same route as above using an attribute
+        // [ActionName("Add"), HttpPost]
+        // First part aliases the route to Add
+        // Second part tells what kind of http action it is: POST
+        // But, because our method signature is now different because we are passing in Form fields as parameters
+        // We don't need to alias the method to AddPost
+        [HttpPost]
+        public ActionResult Add(
+            string date, 
+            string activityId, 
+            string duration, 
+            string intensity, 
+            string exclude, 
+            string notes )
         {
+            ViewBag.Date = date;
+            ViewBag.ActivityId = activityId;
+            ViewBag.Duration = duration;
+            ViewBag.Intensity = intensity;
+            ViewBag.Exclude = exclude;
+            ViewBag.Notes = notes;
             return View();
         }
        
