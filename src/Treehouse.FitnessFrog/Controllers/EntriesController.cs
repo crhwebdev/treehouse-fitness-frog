@@ -48,7 +48,7 @@ namespace Treehouse.FitnessFrog.Controllers
             };
 
             //passing list of activitiesin Data to Add.cshtml to be used to populate SelectList
-            ViewBag.ActivitiesSelectListItems = new SelectList(Data.Data.Activities, "Id", "Name");
+            SetupActivitiesSelectListItems();
 
             //pass a new instance of Entry class to the view
             return View(entry);
@@ -64,26 +64,23 @@ namespace Treehouse.FitnessFrog.Controllers
         // Update:  use Entry class instead of idividual properties of form - C# will populate Entry class with properties
         [HttpPost]
         public ActionResult Add(Entry entry)
-        {            
-            // If there aren't any "Duration" field validation errors
-            // then make sure that the duration is greater than "0".
-            if (ModelState.IsValidField("Duration") && entry.Duration <= 0)
-            {
-                ModelState.AddModelError("Duration", "The Duration field value must be greater than '0'.");
-            }
+        {
+            ValidateEntry(entry);
             //check to see if Model is valid (i.e. no errors)
             if (ModelState.IsValid)
             {
                 //if it has no errors, add it to the repository
                 _entriesRepository.AddEntry(entry);
 
+                TempData["Message"] = "Your entry was successfully added!";
+
                 //redirect to Index page
                 return RedirectToAction("Index");
             }
-            
+
             //passing list of activitiesin Data to Add.cshtml to be used to populate SelectList
-            ViewBag.ActivitiesSelectListItems = new SelectList(Data.Data.Activities, "Id", "Name");
-       
+            SetupActivitiesSelectListItems();
+
             //return page View with entry object passed back
             return View(entry);
         }
@@ -95,7 +92,35 @@ namespace Treehouse.FitnessFrog.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
+            Entry entry = _entriesRepository.GetEntry((int)id);
+
+            if(entry == null)
+            {
+                return HttpNotFound();
+            }
+
+            SetupActivitiesSelectListItems();
+
             return View();
+        }
+
+        [HttpPost]
+        public ActionResult Edit(Entry entry)
+        {
+            ValidateEntry(entry);
+
+            if (ModelState.IsValid)
+            {
+                _entriesRepository.UpdateEntry(entry);
+
+                TempData["Message"] = "Your entry was successfully updated!";
+
+                return RedirectToAction("Index");
+            }
+
+            SetupActivitiesSelectListItems();
+
+            return View(entry);
         }
 
         public ActionResult Delete(int? id)
@@ -105,7 +130,41 @@ namespace Treehouse.FitnessFrog.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            return View();
+            Entry entry = _entriesRepository.GetEntry((int)id);
+
+            if (entry == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(entry);
+        }
+
+        [HttpPost]
+        public ActionResult Delete(int id)
+        {
+            _entriesRepository.DeleteEntry(id);
+
+            TempData["Message"] = "Your entry was successfully deleted!";
+
+            return RedirectToAction("Index");
+        }
+
+        private void ValidateEntry(Entry entry)
+        {
+            // If there aren't any "Duration" field validation errors
+            // then make sure that the duration is greater than "0".
+            if (ModelState.IsValidField("Duration") && entry.Duration <= 0)
+            {
+                ModelState.AddModelError("Duration",
+                    "The Duration field value must be greater than '0'.");
+            }
+        }
+
+        private void SetupActivitiesSelectListItems()
+        {
+            ViewBag.ActivitiesSelectListItems = new SelectList(
+                Data.Data.Activities, "Id", "Name");
         }
     }
 }

@@ -1,6 +1,10 @@
-﻿
+﻿@*This sets view to use the strongly typed model 'Entry' passed from Add GET method*@
+@model Treehouse.FitnessFrog.Models.Entry
+
 @{
     ViewBag.Title = "Edit Entry";
 }
 
 <h2>@ViewBag.Title</h2>
+
+@Html.Partial("_EntryForm")
