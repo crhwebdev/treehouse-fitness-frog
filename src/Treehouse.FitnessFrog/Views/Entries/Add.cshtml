@@ -8,6 +8,8 @@
 
 <h2>@ViewBag.Title</h2>
 
+@Html.ValidationSummary("The following errors were found:", new { @class = "alert alert-danger" })
+
 @*Use Html form helper to create form*@
 @using (Html.BeginForm())
 {
@@ -25,6 +27,7 @@
                 @*LabelFor and TextBoxFor take a lambda that passes model*@
                 @Html.LabelFor(m => m.ActivityId, new { @class = "control-label" })
                 @Html.DropDownListFor(m => m.ActivityId, (SelectList)ViewBag.ActivitiesSelectListItems, "", new { @class = "form-control" })
+                @*@Html.ValidationMessageFor(m => m.ActivityId)*@
 
             </div>
 
