@@ -113,6 +113,7 @@ namespace Treehouse.FitnessFrog.Controllers
             {
                 _entriesRepository.UpdateEntry(entry);
 
+                //set temp data so that redirect page will have access to TempData["Message"].
                 TempData["Message"] = "Your entry was successfully updated!";
 
                 return RedirectToAction("Index");
