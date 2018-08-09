@@ -55,8 +55,13 @@
 
             <div class="form-group">
                 @*LabelFor and TextBoxFor take a lambda that passes model*@
-                @Html.LabelFor(m => m.Exclude, new { @class = "control-label" })
-                @Html.TextBoxFor(m => m.Exclude, new { @class = "form-control" })
+                <div class="checkbox">
+                    <label>
+                        @Html.CheckBoxFor(m => m.Exclude) 
+                        @Html.DisplayNameFor(m => m.Exclude)
+                    </label>
+                </div>
+                
             </div>
 
         </div>
